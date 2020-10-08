@@ -20,6 +20,8 @@ let walkwayImg;
 let secretImg;
 let endImg;
 let rooms;
+let place;
+let newIndex;
 
 
 function preload() {
@@ -48,7 +50,6 @@ function setup() {
 }
 
 function draw() {
-    
     createArrows();
 }
 
@@ -58,6 +59,10 @@ arrow = {
             arrowLeft = createSprite(75, 325);
             arrowLeftImg.resize(50, 50);
             arrowLeft.addImage(arrowLeftImg);
+            arrowLeft.onMousePressed = function() {
+                // index -0.5
+                changeRooms(-0.5);
+            }
         }
     },
 
@@ -66,6 +71,10 @@ arrow = {
             arrowRight = createSprite(725, 325);
             arrowRightImg.resize(50, 50);
             arrowRight.addImage(arrowRightImg);
+            arrowRight.onMousePressed = function() {
+                // index +0.5
+                changeRooms(0.5);
+            }
         }
     },
 
@@ -75,7 +84,8 @@ arrow = {
             arrowUpImg.resize(50, 50);
             arrowUp.addImage(arrowUpImg);
             arrowUp.onMousePressed = function() {
-                rooms.hallway.display(); // must be edited
+                // index +1
+                changeRooms(1);
             }
         }
     },
@@ -86,23 +96,38 @@ arrow = {
             arrowDownImg.resize(50, 50);
             arrowDown.addImage(arrowDownImg);
             arrowDown.onMousePressed = function() {
-                rooms.car.display(); // must be edited
+                // index -1
+                changeRooms(-1);
             }
         }
     }
 }
 
 function createArrows() { //adjust function to show only revlevant arrows
-    arrow.left.display();
-    arrow.right.display();
-    arrow.up.display();
-    arrow.down.display();
+    for (let i in rooms) {
+        console.log(rooms[i]['dir'] + 'one');
+        if (rooms[i]['player'] == true) {
+            for (let k in rooms[i]['dir']) {
+                console.log(k + 'two');
+                if (rooms[i]['dir'][k] == 'up') {
+                    arrow.up.display();
+                } else if (rooms[i]['dir'][k] == 'down') {
+                    arrow.down.display();
+                } else if (rooms[i]['dir'][k] == 'right') {
+                    arrow.right.display();
+                } else if (rooms[i]['dir'][k] == 'left') {
+                    arrow.left.display();
+                }
+            }
+        }
+    }
     drawSprites();
-} // also must make arrows clickable and have the changeRooms function onClick
+}
 
 rooms = {
     car : {
         index : 0,
+        player : true,
         description : '',
         dir : ['up'],
         display : function() {
@@ -112,6 +137,7 @@ rooms = {
 
     hallway : {
         index : 1,
+        player : false,
         description : '',
         dir : ['up', 'down'],
         display : function() {
@@ -121,6 +147,7 @@ rooms = {
 
     stairs : {
         index : 2,
+        player : false,
         description : '',
         dir : ['up', 'down'],
         display : function() {
@@ -130,6 +157,7 @@ rooms = {
 
     living : {
         index : 3,
+        player : false,
         description : '',
         dir : ['down', 'right', 'left'],
         display : function() {
@@ -138,7 +166,8 @@ rooms = {
     },
 
     walkway : {
-        index : 4,
+        index : 3.5,
+        player : false,
         description : '',
         dir : ['right', 'left'],
         display : function() {
@@ -147,7 +176,8 @@ rooms = {
     },
 
     art : {
-        index : 5,
+        index : 4,
+        player : false,
         description : '',
         dir : ['left'],
         display : function() {
@@ -156,7 +186,8 @@ rooms = {
     },
 
     bedroom : {
-        index : 6,
+        index : 2.5,
+        player : false,
         description : '',
         dir : ['up', 'right'],
         display : function() {
@@ -165,7 +196,8 @@ rooms = {
     },
 
     catacombs : {
-        index : 7,
+        index : 5,
+        player : false,
         description : '',
         dir : ['up', 'down'],
         display : function() {
@@ -174,7 +206,8 @@ rooms = {
     },
 
     gym : {
-        index : 8,
+        index : 6,
+        player : false,
         description : '',
         dir : ['down', 'left'],
         display : function() {
@@ -183,7 +216,8 @@ rooms = {
     },
 
     computer : { // final puzzle room?
-        index : 9,
+        index : 5.5,
+        player : false,
         description : '',
         dir : ['up', 'right'],
         display : function() {
@@ -192,7 +226,8 @@ rooms = {
     },
 
     secret : {
-        index : 10,
+        index : 6.5,
+        player : false,
         description : '',
         dir : ['up', 'down'],
         display : function() {
@@ -201,7 +236,8 @@ rooms = {
     },
 
     end : {
-        index : 11,
+        index : 7.5,
+        player : false,
         description : '',
         dir : [],
         display : function() {
@@ -210,19 +246,26 @@ rooms = {
     }
 
     // end room, several rooms (10? maybe 12) with puzzles accross them- usually one main puzzle room with 3-4 element room and a 1-3-1-3-1 room formation
-}
+}   
 
-class player {
-
-    constructor(playerInv, playerLoc) { 
-        this.playerInv = playerInv;
-        this.playerLoc = playerLoc;
-
+function playerLoc(num) {
+    for (let i in rooms) {
+        if (rooms[i]['player'] == true) {
+            place = rooms[i]['index'];
+            newIndex = place + num;
+            rooms[i]['player'] = false;
+            return newIndex; // scope not working but process works correctly- simply fix var scope
+        }
     }
 }
-    
 
-function changeRooms (target) {
-    let currentLoc = player.playerLoc
+function changeRooms (it) {
+    playerLoc(it);
+    for (let i in rooms) {
+        if (rooms[i]['index'] == newIndex) {
+            rooms[i]['player'] == true;
+            rooms[i]['display'];
+        }
+    }
     //change background and sprites through functions in room class with target input
 }
