@@ -46,7 +46,7 @@ function preload() {
 
 function setup() {
     createCanvas(800, 800);
-    rooms.car.display();
+    //rooms.car.display();
 }
 
 function draw() {
@@ -85,7 +85,7 @@ arrow = {
             arrowUp.addImage(arrowUpImg);
             arrowUp.onMousePressed = function() {
                 // index +1
-                changeRooms(1);
+                changeRooms(1); // IS THIS RUNNING MORE THAN ONCE PER CLICK?
             }
         }
     },
@@ -101,27 +101,6 @@ arrow = {
             }
         }
     }
-}
-
-function createArrows() { //adjust function to show only revlevant arrows
-    for (let i in rooms) {
-        console.log(rooms[i]['dir'] + 'one');
-        if (rooms[i]['player'] == true) {
-            for (let k in rooms[i]['dir']) {
-                console.log(k + 'two');
-                if (rooms[i]['dir'][k] == 'up') {
-                    arrow.up.display();
-                } else if (rooms[i]['dir'][k] == 'down') {
-                    arrow.down.display();
-                } else if (rooms[i]['dir'][k] == 'right') {
-                    arrow.right.display();
-                } else if (rooms[i]['dir'][k] == 'left') {
-                    arrow.left.display();
-                }
-            }
-        }
-    }
-    drawSprites();
 }
 
 rooms = {
@@ -250,22 +229,47 @@ rooms = {
 
 function playerLoc(num) {
     for (let i in rooms) {
+        console.log(rooms[i]['index']);
+        console.log(rooms[i]['player']);
         if (rooms[i]['player'] == true) {
+            console.log(rooms[i]);
             place = rooms[i]['index'];
             newIndex = place + num;
-            rooms[i]['player'] = false;
-            return newIndex; // scope not working but process works correctly- simply fix var scope
+            return newIndex; 
         }
     }
 }
 
 function changeRooms (it) {
-    playerLoc(it);
+    let newIndex = playerLoc(it);
     for (let i in rooms) {
         if (rooms[i]['index'] == newIndex) {
-            rooms[i]['player'] == true;
-            rooms[i]['display'];
+            console.log(rooms[i]['index'] + ' = ' + newIndex)
+            rooms[i]['player'] = true;
+            rooms[i]['display']();
+        } else {
+            rooms[i]['player'] = false;
         }
     }
     //change background and sprites through functions in room class with target input
+}
+
+function createArrows() { //adjust function to show only revlevant arrows
+    for (let i in rooms) {
+        if (rooms[i]['player'] === true) {
+            rooms[i]['display']();
+            for (let k in rooms[i]['dir']) {
+                if (rooms[i]['dir'][k] == 'up') {
+                    arrow.up.display();
+                } else if (rooms[i]['dir'][k] == 'down') {
+                    arrow.down.display();
+                } else if (rooms[i]['dir'][k] == 'right') {
+                    arrow.right.display();
+                } else if (rooms[i]['dir'][k] == 'left') {
+                    arrow.left.display();
+                }
+            }
+        }
+    }
+    drawSprites();
 }
