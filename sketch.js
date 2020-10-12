@@ -229,7 +229,7 @@ rooms = {
         display : function() {
             background(endImg);
             textSize(50);
-            text('Congratulations', 350, 400);
+            text('Congratulations', 275, 400);
         }
     }
 
