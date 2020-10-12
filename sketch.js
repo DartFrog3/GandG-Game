@@ -116,8 +116,6 @@ rooms = {
         dir : ['up'],
         display : function() {
             background(carImg);
-            textSize(50);
-            text('This is a placeholder for a much cooler looking intro. Your goal is to escape! Traverse the map and find the secret entrance to the hideout to win!')
         }
     },
 
@@ -128,6 +126,8 @@ rooms = {
         dir : ['up', 'down'],
         display : function() {
             background(hallwayImg);
+            textSize(50);
+            text('This is a placeholder for a much cooler looking intro. Your goal is to escape! Traverse the map and find the secret entrance to the hideout to win!')
         }
     },
 
