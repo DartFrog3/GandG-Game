@@ -150,7 +150,7 @@ rooms = {
     },
 
     walkway : {
-        index : 5,
+        index : 4,
         player : false,
         description : '',
         dir : ['right', 'left'],
@@ -160,7 +160,7 @@ rooms = {
     },
 
     art : {
-        index : 6,
+        index : 5,
         player : false,
         description : '',
         dir : ['left'],
@@ -170,7 +170,7 @@ rooms = {
     },
 
     bedroom : {
-        index : 7,
+        index : 6,
         player : false,
         description : '',
         dir : ['up', 'right'],
@@ -180,7 +180,7 @@ rooms = {
     },
 
     catacombs : {
-        index : 8,
+        index : 7,
         player : false,
         description : '',
         dir : ['up', 'down'],
@@ -190,7 +190,7 @@ rooms = {
     },
 
     gym : {
-        index : 9,
+        index : 8,
         player : false,
         description : '',
         dir : ['down', 'left'],
@@ -200,7 +200,7 @@ rooms = {
     },
 
     computer : { // final puzzle room?
-        index : 10,
+        index : 9,
         player : false,
         description : '',
         dir : ['up', 'right'],
@@ -210,7 +210,7 @@ rooms = {
     },
 
     secret : {
-        index : 11,
+        index : 10,
         player : false,
         description : '',
         dir : ['up', 'down'],
@@ -220,12 +220,13 @@ rooms = {
     },
 
     end : {
-        index : 12,
+        index : 11,
         player : false,
         description : '',
         dir : [],
         display : function() {
             background(endImg);
+            text('Congratulations', 350, 400);
         }
     }
 
