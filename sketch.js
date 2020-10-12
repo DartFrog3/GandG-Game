@@ -226,6 +226,7 @@ rooms = {
         dir : [],
         display : function() {
             background(endImg);
+            textSize(50);
             text('Congratulations', 350, 400);
         }
     }
