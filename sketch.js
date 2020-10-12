@@ -47,6 +47,8 @@ function preload() {
 
 function setup() {
     createCanvas(800, 800);
+    textSize(50);
+            text('This is a placeholder for a much cooler looking intro. Your goal is to escape! Traverse the map and find the secret entrance to the hideout to win!')
 
     /*arrowLeft = createSprite(75, 325);
     arrowLeftImg.resize(50, 50);
@@ -126,8 +128,6 @@ rooms = {
         dir : ['up', 'down'],
         display : function() {
             background(hallwayImg);
-            textSize(50);
-            text('This is a placeholder for a much cooler looking intro. Your goal is to escape! Traverse the map and find the secret entrance to the hideout to win!')
         }
     },
 
