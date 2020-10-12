@@ -246,7 +246,7 @@ function createArrows() {
                     createButton('Up').position(400, 65).mousePressed(changeRooms);
                 } else if (rooms[i]['dir'][k] === 'down') {
                     //roomIndex[0] = -1;
-                    roomIndex[0] = -1;
+                    roomIndex[0] = 1;
                     createButton('Down').position(400, 700).mousePressed(changeRooms);
                 } else if (rooms[i]['dir'][k] == 'right') {
                     //roomIndex[0] = 0.5;
