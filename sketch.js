@@ -22,7 +22,8 @@ let endImg;
 let rooms;
 let place;
 let newIndex;
-let roomIndex = [];
+let scrollImg;
+let scroll;
 
 
 function preload() {
@@ -42,12 +43,13 @@ function preload() {
     walkwayImg = loadImage('assets/walkway.jpg');
     secretImg = loadImage('assets/secret.jpg');
     endImg = loadImage('assets/end.jpg');
+    scrollImg = loadImage('sprites/scroll.png');
 
 }
 
 function setup() { // bug of no arrows at first
     createCanvas(800, 800);
-    rooms.car.display();
+    //rooms.car.display();
 
     arrowLeft = createSprite(75, 325);
     arrowLeftImg.resize(50, 50);
@@ -95,7 +97,7 @@ rooms = {
         dir : ['up'],
         display : function() {
             background(carImg);
-            // gui note at beginning
+            createScroll('Your goal is to escape! Traverse the map and find the secret entrance to the hideout to win!');
         }
     },
 
@@ -206,7 +208,7 @@ rooms = {
         dir : [],
         display : function() {
             background(endImg);
-            // gui congrats
+            createScroll('Congratulations! You escaped and found the secret hideout!')
         }
     }
 
@@ -253,7 +255,7 @@ function playerLoc(it) { // 6
     }
 }
 
-function changeRooms (it) { // 7
+function changeRooms(it) { // 7
     let newIndex = playerLoc(it);
     for (let i in rooms) {
         if (rooms[i]['index'] == newIndex) {
@@ -263,4 +265,23 @@ function changeRooms (it) { // 7
         }
     }
     createArrows();
+}
+
+function createScroll(message) {
+    scroll = createSprite(400, 400);
+    scrollImg.resize(600, 600);
+    scroll.addImage(scrollImg);
+    drawSprite();
+    textSize(30);
+    text(message, 200, 200, 600, 600); // text going under image need a fix
+    scroll.onMousePressed = function() {
+        scroll.visible = false;
+    }
+
+    
+
+}
+
+function label(message) {
+
 }
