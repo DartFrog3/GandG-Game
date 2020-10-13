@@ -217,7 +217,7 @@ rooms = {
 
 function createArrows() { 
     arrowUp.visible = false;
-    arrowDown.visible = false;
+    arrowDown.visible = false; // maybe change these visibles to remove? look into docs
     arrowRight.visible = false;
     arrowLeft.visible = false;
 
@@ -283,5 +283,7 @@ function createScroll(message) {
 }
 
 function label(message) {
-
+    // blank rect at bottom (50, 600, 750, 750)
+    // have puzzles or interactables call
+    // maybe keep an empty on perm?
 }
