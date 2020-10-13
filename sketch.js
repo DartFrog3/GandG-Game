@@ -45,69 +45,46 @@ function preload() {
 
 }
 
-function setup() {
+function setup() { // bug of no arrows at first
     createCanvas(800, 800);
-    textSize(50);
-            text('This is a placeholder for a much cooler looking intro. Your goal is to escape! Traverse the map and find the secret entrance to the hideout to win!')
+    rooms.car.display();
 
-    /*arrowLeft = createSprite(75, 325);
+    arrowLeft = createSprite(75, 325);
     arrowLeftImg.resize(50, 50);
     arrowLeft.addImage(arrowLeftImg);
-    arrowLeft.onMousePressed = changeRooms(-0.5);
 
     arrowRight = createSprite(725, 325);
     arrowRightImg.resize(50, 50);
     arrowRight.addImage(arrowRightImg);
-    arrowRight.onMousePressed = changeRooms(0.5);
-
+    
     arrowUp = createSprite(400, 65);
     arrowUpImg.resize(50, 50);
-    arrowUp.addImage(arrowUpImg);
-    arrowUp.onMousePressed = changeRooms(1);
+    arrowUp.addImage(arrowUpImg); 
 
     arrowDown = createSprite(400, 700);
     arrowDownImg.resize(50, 50);
-    arrowDown.addImage(arrowDownImg);
-    arrowDown.onMousePressed = changeRooms(-1);*/
+    arrowDown.addImage(arrowDownImg); 
+
+    arrowUp.onMousePressed = function() {
+        changeRooms(1);
+    }
+    
+    arrowDown.onMousePressed = function() {
+        changeRooms(-1);
+    }
+    
+    arrowRight.onMousePressed = function() {
+        changeRooms(0.5);
+    }
+    
+    arrowLeft.onMousePressed = function() {
+        changeRooms(-0.5);
+    }
 
 }
 
-/*arrow = { // 5
-    left : {
-        display : function() {
-            arrowLeft = createSprite(75, 325);
-            arrowLeftImg.resize(50, 50);
-            arrowLeft.addImage(arrowLeftImg);
-        }
-    },
-
-    right : {
-        display : function() {
-            arrowRight = createSprite(725, 325);
-            arrowRightImg.resize(50, 50);
-            arrowRight.addImage(arrowRightImg);
-        }
-    },
-
-    up : {
-        display : function() {
-            arrowUp = createSprite(400, 65);
-            arrowUpImg.resize(50, 50);
-            arrowUp.addImage(arrowUpImg);
-        }
-    },
-
-    down : {
-        display : function() {
-            arrowDown = createSprite(400, 700);
-            arrowDownImg.resize(50, 50);
-            arrowDown.addImage(arrowDownImg);
-        }
-    }
-}*/
-
 function draw() {
-    createArrows(); // 1
+     // 1
 }
 
 rooms = {
@@ -118,6 +95,7 @@ rooms = {
         dir : ['up'],
         display : function() {
             background(carImg);
+            // gui note at beginning
         }
     },
 
@@ -145,7 +123,7 @@ rooms = {
         index : 3,
         player : false,
         description : '',
-        dir : ['down', 'right', 'left'],
+        dir : ['down', 'up', 'left'],
         display : function() {
             background(livingImg);
         }
@@ -155,24 +133,24 @@ rooms = {
         index : 4,
         player : false,
         description : '',
-        dir : ['right', 'left'],
+        dir : ['down'],
         display : function() {
             background(walkwayImg);
         }
     },
 
     art : {
-        index : 5,
+        index : 8,
         player : false,
         description : '',
-        dir : ['left'],
+        dir : [],
         display : function() {
             background(artImg);
         }
     },
 
     bedroom : {
-        index : 6,
+        index : 2.5,
         player : false,
         description : '',
         dir : ['up', 'right'],
@@ -182,7 +160,7 @@ rooms = {
     },
 
     catacombs : {
-        index : 7,
+        index : 3.5,
         player : false,
         description : '',
         dir : ['up', 'down'],
@@ -192,27 +170,27 @@ rooms = {
     },
 
     gym : {
-        index : 8,
+        index : 4.5,
         player : false,
         description : '',
-        dir : ['down', 'left'],
+        dir : ['down', 'right'],
         display : function() {
             background(gymImg);
         }
     },
 
     computer : { // final puzzle room?
-        index : 9,
+        index : 5,
         player : false,
         description : '',
-        dir : ['up', 'right'],
+        dir : ['up', 'left'],
         display : function() {
             background(computerImg);
         }
     },
 
     secret : {
-        index : 10,
+        index : 6,
         player : false,
         description : '',
         dir : ['up', 'down'],
@@ -222,14 +200,13 @@ rooms = {
     },
 
     end : {
-        index : 11,
+        index : 7,
         player : false,
         description : '',
         dir : [],
         display : function() {
             background(endImg);
-            textSize(50);
-            text('Congratulations', 200, 400);
+            // gui congrats
         }
     }
 
@@ -237,25 +214,24 @@ rooms = {
 }   
 
 function createArrows() { 
+    arrowUp.visible = false;
+    arrowDown.visible = false;
+    arrowRight.visible = false;
+    arrowLeft.visible = false;
+
     for (let i in rooms) {
         if (rooms[i]['player'] === true) { // 2
             rooms[i]['display'](); // 3
             for (let k in rooms[i]['dir']) { // 4
                 if (rooms[i]['dir'][k] == 'up') {
-                    roomIndex[0] = 1;
-                    createButton('Up').position(400, 65).mousePressed(changeRooms);
+                    arrowUp.visible = true;
                 } else if (rooms[i]['dir'][k] === 'down') {
-                    //roomIndex[0] = -1;
-                    roomIndex[0] = 1;
-                    createButton('Down').position(400, 700).mousePressed(changeRooms);
+                    arrowDown.visible = true;
                 } else if (rooms[i]['dir'][k] == 'right') {
-                    //roomIndex[0] = 0.5;
-                    roomIndex[0] = 1;
-                    createButton('Right').position(725, 325).mousePressed(changeRooms);
+                    arrowRight.visible = true;
                 } else if (rooms[i]['dir'][k] == 'left') {
-                    //roomIndex[0] = -0.5;
-                    roomIndex[0] = 1;
-                    createButton('Left').position(75, 325).mousePressed(changeRooms);
+                    arrowLeft.visible = true;
+                    
                 } else {
                     continue;
                 }
@@ -267,29 +243,24 @@ function createArrows() {
     }
 }
 
-function playerLoc() { // 6
+function playerLoc(it) { // 6
     for (let i in rooms) {
         if (rooms[i]['player'] == true) {
             place = rooms[i]['index'];
-            console.log(roomIndex[0]);
-            newIndex = place + roomIndex[0];
+            newIndex = place + it;
             return newIndex; 
         }
     }
 }
 
-function changeRooms () { // 7
-    let newIndex = playerLoc();
+function changeRooms (it) { // 7
+    let newIndex = playerLoc(it);
     for (let i in rooms) {
         if (rooms[i]['index'] == newIndex) {
             rooms[i]['player'] = true;
-            console.log(newIndex);
         } else {
             rooms[i]['player'] = false;
         }
     }
-}
-
-function changeRoomz () {
-    
+    createArrows();
 }
