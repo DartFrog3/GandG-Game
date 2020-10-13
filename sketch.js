@@ -63,7 +63,7 @@ function setup() { // bug of no arrows at first
     arrowUpImg.resize(50, 50);
     arrowUp.addImage(arrowUpImg); 
 
-    arrowDown = createSprite(400, 700);
+    arrowDown = createSprite(400, 750);
     arrowDownImg.resize(50, 50);
     arrowDown.addImage(arrowDownImg); 
 
@@ -98,6 +98,8 @@ rooms = {
         display : function() {
             background(carImg);
             createScroll('Your goal is to escape! Traverse the map and find the secret entrance to the hideout to win!');
+
+            label('You drive your car down a strange highway.')
         }
     },
 
@@ -108,6 +110,8 @@ rooms = {
         dir : ['up', 'down'],
         display : function() {
             background(hallwayImg);
+
+            label('You glimpse a hallway on the side of the road and decide to wander in.')
         }
     },
 
@@ -227,18 +231,21 @@ function createArrows() {
             for (let k in rooms[i]['dir']) { // 4
                 if (rooms[i]['dir'][k] == 'up') {
                     arrowUp.visible = true;
+                    drawSprite(arrowUp);
                 } else if (rooms[i]['dir'][k] === 'down') {
                     arrowDown.visible = true;
+                    drawSprite(arrowDown);
                 } else if (rooms[i]['dir'][k] == 'right') {
                     arrowRight.visible = true;
+                    drawSprite(arrowRight);
                 } else if (rooms[i]['dir'][k] == 'left') {
                     arrowLeft.visible = true;
-                    
+                    drawSprite(arrowLeft);
                 } else {
                     continue;
                 }
             }
-            drawSprites();
+            // drawSprites();
         } else {
             continue;
         }
@@ -269,21 +276,33 @@ function changeRooms(it) { // 7
 
 function createScroll(message) {
     scroll = createSprite(400, 400);
-    scrollImg.resize(600, 600);
+    scrollImg.resize(400, 400);
     scroll.addImage(scrollImg);
-    drawSprite();
+    drawSprite(scroll);
     textSize(30);
-    text(message, 200, 200, 600, 600); // text going under image need a fix
+    text(message, 200, 200, 600, 600); // text going under image need a fix- visibility doesnt toggle
+    
     scroll.onMousePressed = function() {
         scroll.visible = false;
     }
-
-    
 
 }
 
 function label(message) {
     // blank rect at bottom (50, 600, 750, 750)
+    strokeWeight(5);
+    noFill();
+    rect(50, 550, 700, 75);
+    textSize(30);
+    text(message, 50, 600, 750, 625);
     // have puzzles or interactables call
     // maybe keep an empty on perm?
+}
+
+function invBar() {
+    // for iterator create multiple boxes with rect (50, 650, 750, 700)
+    // need add to inv function
+    // need use function
+    // on click on inv object make highlighted
+    // if invobj.selected = true then draw arrow
 }
