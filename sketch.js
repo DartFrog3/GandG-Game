@@ -113,6 +113,7 @@ function setup() { // bug of no arrows at first
     arrowLeft.onMousePressed = function() {
         changeRooms(-0.5);
     }
+    changeRooms(0);
 
 }
 
@@ -423,8 +424,8 @@ function addInv(item) {
 
 function checkCode() {
     const code = input.value();
-    input.position(-100, -100);
-    button.position(-100, -100);
+    input.position(2000, 2000);
+    button.position(2000, 2000); // button stays if one incorrect bug
     if (int(code) == 155) {
         playerInv.push('goldKey');
         changeRooms(0);
