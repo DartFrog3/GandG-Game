@@ -24,6 +24,27 @@ let place;
 let newIndex;
 let scrollImg;
 let scroll;
+let lockImg;
+let lock;
+let redKey;
+let redKeyImg;
+let blackKey;
+let blackKeyImg;
+let goldKey;
+let goldKeyImg;
+let keyhole;
+let keyholeImg;
+let clockImg;
+let clock;
+let playerInv = [];
+let lockbase;
+let lockbaseImg;
+let scroll2Img;
+let scroll2;
+let label;
+let labelImg;
+let label2;
+let label2Img;
 
 
 function preload() {
@@ -44,12 +65,22 @@ function preload() {
     secretImg = loadImage('assets/secret.jpg');
     endImg = loadImage('assets/end.jpg');
     scrollImg = loadImage('sprites/scroll.png');
+    clockImg = loadImage('sprites/clock.png');
+    keyholeImg = loadImage('sprites/keyhole.png');
+    redKeyImg = loadImage('sprites/redKey.png');
+    blackKeyImg = loadImage('sprites/blackKey.png');
+    goldKeyImg = loadImage('sprites/goldKey.png');
+    lockImg = loadImage('sprites/lock.png');
+    lockbaseImg = loadImage('assets/lockbase.jpg');
+    scroll2Img = loadImage('sprites/scroll2.png');
+    labelImg = loadImage('sprites/label.png');
+    label2Img = loadImage('sprites/label2.png');
 
 }
 
 function setup() { // bug of no arrows at first
     createCanvas(800, 800);
-    //rooms.car.display();
+    input = createInput();
 
     arrowLeft = createSprite(75, 325);
     arrowLeftImg.resize(50, 50);
@@ -97,9 +128,14 @@ rooms = {
         dir : ['up'],
         display : function() {
             background(carImg);
-            createScroll('Your goal is to escape! Traverse the map and find the secret entrance to the hideout to win!');
-
-            label('You drive your car down a strange highway.')
+            scroll = createSprite(400, 325);
+            scrollImg.resize(400, 400);
+            scroll.addImage(scrollImg);
+            drawSprite(scroll);
+            scroll.onMousePressed = function() {
+                scroll.visible = false;
+            }
+            invBar();
         }
     },
 
@@ -110,8 +146,7 @@ rooms = {
         dir : ['up', 'down'],
         display : function() {
             background(hallwayImg);
-
-            label('You glimpse a hallway on the side of the road and decide to wander in.')
+            invBar();
         }
     },
 
@@ -122,6 +157,7 @@ rooms = {
         dir : ['up', 'down'],
         display : function() {
             background(stairsImg);
+            invBar();
         }
     },
 
@@ -132,6 +168,17 @@ rooms = {
         dir : ['down', 'up', 'left'],
         display : function() {
             background(livingImg);
+            invBar();
+            clock = createSprite(725, 100);
+            clockImg.resize(75, 75);
+            clock.addImage(clockImg);
+            clock.onMousePressed = function() {
+                label = createSprite(450, 600);
+                labelImg.resize(800, 400);
+                label.addImage(labelImg);
+                drawSprite(label);
+            }
+            drawSprite(clock);
         }
     },
 
@@ -142,6 +189,17 @@ rooms = {
         dir : ['down'],
         display : function() {
             background(walkwayImg);
+            invBar();
+            blackKey = createSprite(75, 650);
+            blackKeyImg.resize(30, 30);
+            blackKey.addImage(blackKeyImg);
+            blackKey.onMousePressed = function() {
+                blackKey.visible = false;
+                addInv('blackKey');
+                playerInv.push('blackKey');
+            }
+            drawSprite(blackKey);
+            
         }
     },
 
@@ -152,6 +210,7 @@ rooms = {
         dir : [],
         display : function() {
             background(artImg);
+            invBar();
         }
     },
 
@@ -162,6 +221,7 @@ rooms = {
         dir : ['up', 'right'],
         display : function() {
             background(bedroomImg);
+            invBar();
         }
     },
 
@@ -172,6 +232,7 @@ rooms = {
         dir : ['up', 'down'],
         display : function() {
             background(catacombsImg);
+            invBar();
         }
     },
 
@@ -182,16 +243,41 @@ rooms = {
         dir : ['down', 'right'],
         display : function() {
             background(gymImg);
+            invBar();
+            redKey = createSprite(600, 550);
+            redKeyImg.resize(30, 30);
+            redKey.addImage(redKeyImg);
+            drawSprite(redKey);
+            redKey.onMousePressed = function() {
+                redKey.visible = false;
+                addInv('redKey');
+                playerInv.push('redKey');
+            }
+
         }
     },
 
-    computer : { // final puzzle room?
+    computer : {
         index : 5,
         player : false,
         description : '',
         dir : ['up', 'left'],
         display : function() {
             background(computerImg);
+            invBar();
+            lock = createSprite(600, 475);
+            lockImg.resize(30, 30);
+            lock.addImage(lockImg);
+            lock.onMousePressed = function() {
+                background(lockbaseImg);
+                input.position(330, 470);
+                button = createButton('-');
+                button.position(480, 470);
+                button.mousePressed(checkCode);
+                textAlign(CENTER);
+                textSize(50);
+            }
+            drawSprite(lock);
         }
     },
 
@@ -199,10 +285,32 @@ rooms = {
         index : 6,
         player : false,
         description : '',
-        dir : ['up', 'down'],
+        dir : ['down'],
         display : function() {
             background(secretImg);
-        }
+            invBar();
+        
+            keyhole = createSprite(400, 400);
+            keyhole2 = createSprite(400, 430);
+            keyhole3 = createSprite(400, 460);
+            keyholeImg.resize(30, 30);
+            keyhole.addImage(keyholeImg);
+            keyhole2.addImage(keyholeImg);
+            keyhole3.addImage(keyholeImg);
+            keyhole.onMousePressed = function() {
+                if (playerInv.length == 3) {
+                    changeRooms(1);
+                } else {
+                    label2 = createSprite(450, 600);
+                    label2Img.resize(800, 400);
+                    label2.addImage(label2Img);
+                    drawSprite(label2);
+                }
+            }
+            drawSprite(keyhole);
+            drawSprite(keyhole2);
+            drawSprite(keyhole3);
+        }  
     },
 
     end : {
@@ -212,7 +320,13 @@ rooms = {
         dir : [],
         display : function() {
             background(endImg);
-            createScroll('Congratulations! You escaped and found the secret hideout!')
+            scroll2 = createSprite(400, 325);
+            scroll2Img.resize(400, 400);
+            scroll2.addImage(scroll2Img);
+            drawSprite(scroll2);
+            scroll2.onMousePressed = function() {
+                scroll2.visible = false;
+            }
         }
     }
 
@@ -245,7 +359,7 @@ function createArrows() {
                     continue;
                 }
             }
-            // drawSprites();
+        
         } else {
             continue;
         }
@@ -274,35 +388,49 @@ function changeRooms(it) { // 7
     createArrows();
 }
 
-function createScroll(message) {
-    scroll = createSprite(400, 400);
-    scrollImg.resize(400, 400);
-    scroll.addImage(scrollImg);
-    drawSprite(scroll);
-    textSize(30);
-    text(message, 200, 200, 600, 600); // text going under image need a fix- visibility doesnt toggle
-    
-    scroll.onMousePressed = function() {
-        scroll.visible = false;
+function invBar() {
+    for (let k = 0; k < 14; k++) {
+        strokeWeight(5);
+        noFill();
+        rect(50+k*50, 650, 50, 50);
     }
 
+    for (z in playerInv) {
+        addInv(playerInv[z]);
+    }
 }
 
-function label(message) {
-    // blank rect at bottom (50, 600, 750, 750)
-    strokeWeight(5);
-    noFill();
-    rect(50, 550, 700, 75);
-    textSize(30);
-    text(message, 50, 600, 750, 625);
-    // have puzzles or interactables call
-    // maybe keep an empty on perm?
+function addInv(item) {
+    if (item == 'blackKey') {
+        blackKey = createSprite(75, 675);
+        blackKeyImg.resize(50, 50);
+        blackKey.addImage(blackKeyImg);
+        drawSprite(blackKey);
+    } else if (item == 'redKey') {
+        redKey = createSprite(125, 675);
+        redKeyImg.resize(50, 50);
+        redKey.addImage(redKeyImg);
+        drawSprite(redKey);
+    } else if (item == 'goldKey') {
+        goldKey = createSprite(175, 675);
+        goldKeyImg.resize(50, 50);
+        goldKey.addImage(goldKeyImg);
+        drawSprite(goldKey);
+    } else {
+        console.log('fail');
+    }
 }
 
-function invBar() {
-    // for iterator create multiple boxes with rect (50, 650, 750, 700)
-    // need add to inv function
-    // need use function
-    // on click on inv object make highlighted
-    // if invobj.selected = true then draw arrow
+function checkCode() {
+    const code = input.value();
+    input.position(-100, -100);
+    button.position(-100, -100);
+    if (int(code) == 155) {
+        playerInv.push('goldKey');
+        changeRooms(0);
+        return true;
+    } else {
+        changeRooms(0);
+        return false;
+    }
 }
